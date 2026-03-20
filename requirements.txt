@@ -1,0 +1,6 @@
+pandas>=1.2
+dtale
+pandasgui
+numpy>=1.19
+openpyxl
+pywin32

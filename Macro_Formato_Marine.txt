@@ -1,0 +1,32 @@
+Sub FormatearColumnas()
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+
+    ' ====== Separar texto en columnas para 'D' y 'I' ====== '
+    ws.Columns("D").TextToColumns Destination:=ws.Range("D1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False
+    
+    ws.Columns("I").TextToColumns Destination:=ws.Range("I1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False
+
+    ' ====== Convertir columnas 'D' e 'I' a números sin comas ni decimales ====== '
+    ws.Columns("D").NumberFormat = "0"
+    ws.Columns("I").NumberFormat = "0"
+
+    ' ====== Aplicar formato de fecha corta a columnas E, F, J y K ====== '
+    ws.Columns("E:F").NumberFormat = "dd/mm/yyyy"
+    ws.Columns("J:K").NumberFormat = "dd/mm/yyyy"
+
+    ' ====== Aplicar formato de moneda a columnas V a AF con dos decimales ====== '
+    ws.Columns("V:AF").NumberFormat = "$#,##0.00"
+
+    ' ====== Autoajustar el ancho de columna en los rangos indicados ====== '
+    ws.Columns("A:S").AutoFit
+    ws.Columns("V:AJ").AutoFit
+
+    ' Mensaje de confirmación'
+    MsgBox "Formato aplicado correctamente.", vbInformation, "Formato Completado"
+
+End Sub
