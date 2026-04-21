@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python generar_payments.py 202512)"
+    ]
+  }
+}
