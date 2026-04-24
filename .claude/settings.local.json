@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python generar_payments.py 202512)"
+      "Bash(python generar_payments.py 202512)",
+      "Bash(python3)",
+      "Bash(python3 -c ' *)",
+      "PowerShell(cd \"c:\\\\Users\\\\KOT14\\\\OneDrive - Kot Insurance Company AG\\\\Códigos\\\\Códigos Transporte\"; \\(Get-Content \"2.-Actualización Contable Marine.ipynb\" -Raw\\) | Select-String \"AñoMes = 202503\" -Context 2,2)",
+      "Bash(/usr/bin/python3.12)",
+      "Bash(python)"
     ]
   }
 }
