@@ -6,7 +6,10 @@
       "Bash(python3 -c ' *)",
       "PowerShell(cd \"c:\\\\Users\\\\KOT14\\\\OneDrive - Kot Insurance Company AG\\\\Códigos\\\\Códigos Transporte\"; \\(Get-Content \"2.-Actualización Contable Marine.ipynb\" -Raw\\) | Select-String \"AñoMes = 202503\" -Context 2,2)",
       "Bash(/usr/bin/python3.12)",
-      "Bash(python)"
+      "Bash(python)",
+      "PowerShell(python \"C:\\\\Users\\\\IKAL14\\\\AppData\\\\Local\\\\Temp\\\\fix_dups.py\")",
+      "PowerShell(python \"C:\\\\Users\\\\IKAL14\\\\AppData\\\\Local\\\\Temp\\\\read_cells.py\" | Out-File -Encoding utf8 \"$env:TEMP\\\\read_cells.txt\"; Get-Content \"$env:TEMP\\\\read_cells.txt\")",
+      "Bash(python -c ' *)"
     ]
   }
 }
