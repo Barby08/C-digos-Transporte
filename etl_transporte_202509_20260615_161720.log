@@ -1,0 +1,162 @@
+2026-06-15 16:17:21,001 | INFO | Período validado: 202509  (año=2025, mes=9)
+2026-06-15 16:17:21,004 | INFO | Registros en archivo fuente: 4,251
+2026-06-15 16:17:21,008 | INFO | Actualizando tabla 'transporte' (mes actual)...
+2026-06-15 16:17:35,801 | INFO | [Azure] transporte actualizada (TRUNCATE+append)  (4,251 registros)
+2026-06-15 16:17:37,043 | INFO | [Local] transporte actualizada (TRUNCATE+append)  (4,251 registros)
+2026-06-15 16:17:37,045 | INFO | ✅ Tabla 'transporte' actualizada con 4,251 registros
+2026-06-15 16:17:37,115 | INFO | ======================================================================
+2026-06-15 16:17:37,118 | INFO | PASO 1: Obtener estructura de tabla SQL
+2026-06-15 16:17:37,122 | INFO | ======================================================================
+2026-06-15 16:17:37,518 | INFO | ✓ Esquemas Azure y Local son idénticos
+2026-06-15 16:17:37,713 | INFO | ✓ Columna [activo] verificada en ambas bases
+2026-06-15 16:17:37,720 | INFO | Columnas renombradas para coincidir con SQL: {'StandRe LoB': 'STANDRE LOB', 'StandRe detailed LoB': 'STANDRE DETAILED LOB', 'LoB-Inward': 'LOB-INWARD', 'Cumulative SALVAGE': 'CUMULATIVE SALVAGE', 'Cumulative EXPENSES PAID': 'CUMULATIVE EXPENSES PAID', 'Cumulative VALUATION EXPENSES': 'CUMULATIVE VALUATION EXPENSES', 'Cumulative CLAIMS PAID': 'CUMULATIVE CLAIMS PAID', 'Total Claims Paid Inward': 'TOTAL CLAIMS PAID INWARD', 'Total Claims Paid no Alae': 'TOTAL CLAIMS PAID NO ALAE', 'OSLR Inward': 'OSLR INWARD', 'Inward Incurred': 'INWARD INCURRED', 'Inward Incurred no Alae': 'INWARD INCURRED NO ALAE', 'UW Year': 'UW YEAR', 'Nat Cat': 'NAT CAT'}
+2026-06-15 16:17:37,723 | INFO | ✓ Columnas válidas (intersección Excel∩SQL): 40
+2026-06-15 16:17:37,728 | WARNING | Columnas solo en SQL (quedarán NULL en el insert): ['FLAG CONTA']
+2026-06-15 16:17:37,730 | INFO | ======================================================================
+2026-06-15 16:17:37,734 | INFO | PASO 2: Preparar datos del Excel
+2026-06-15 16:17:37,737 | INFO | ======================================================================
+2026-06-15 16:17:37,756 | INFO | ✓ 4,251 registros preparados con activo = 1
+2026-06-15 16:17:37,759 | INFO | ======================================================================
+2026-06-15 16:17:37,762 | INFO | PASO 3: Cargar datos a tabla temporal
+2026-06-15 16:17:37,765 | INFO | ======================================================================
+2026-06-15 16:17:38,885 | INFO | [Local] Tabla temporal creada con replace (4,251 registros)
+2026-06-15 16:17:57,554 | INFO | [Azure] Tabla temporal creada con replace (4,251 registros)
+2026-06-15 16:17:57,666 | WARNING | Mismatches de tipo detectados:
+             COLUMN_NAME tipo_hist tipo_temp
+           ACCIDENT YEAR       int    bigint
+                  activo       int    bigint
+            DATE OF LOSS      date  datetime
+          DATE OF REPORT      date  datetime
+               MES CARGA      date  datetime
+  POLICY PERIOD END DATE      date  datetime
+POLICY PERIOD START DATE      date  datetime
+                 UW YEAR       int    bigint
+     YEAR OF THE RESERVE       int    bigint
+2026-06-15 16:17:57,672 | INFO | ======================================================================
+2026-06-15 16:17:57,673 | INFO | PASO 4: Carga atómica en transportehist
+2026-06-15 16:17:57,674 | INFO | ======================================================================
+2026-06-15 16:17:57,751 | INFO | [Local] DELETE: 4,247 registros del período 202509 eliminados
+2026-06-15 16:17:57,813 | INFO | [Local] Desactivados: 4,320 registros → activo=0
+2026-06-15 16:17:57,894 | INFO | [Local] Insertados: 4,251 registros → activo=1
+2026-06-15 16:17:57,952 | INFO | [Local] ✅ Transacción OK — antes=17,091  deleted=4,247  inserted=4,251  esperado_despues=17,095
+2026-06-15 16:18:05,227 | INFO | [Azure] DELETE: 4,247 registros del período 202509 eliminados
+2026-06-15 16:18:10,474 | INFO | [Azure] Desactivados: 4,320 registros → activo=0
+2026-06-15 16:18:18,984 | INFO | [Azure] Insertados: 4,251 registros → activo=1
+2026-06-15 16:18:19,338 | INFO | [Azure] ✅ Transacción OK — antes=17,091  deleted=4,247  inserted=4,251  esperado_despues=17,095
+2026-06-15 16:18:19,596 | INFO | ======================================================================
+2026-06-15 16:18:19,599 | INFO | RESUMEN FINAL
+2026-06-15 16:18:19,601 | INFO | ======================================================================
+2026-06-15 16:18:20,120 | INFO | transportehist Azure — distribución por activo:
+2026-06-15 16:18:20,123 | INFO |    activo=1  →  4,251 registros  (MES ACTIVO (202509))
+2026-06-15 16:18:20,125 | INFO |    activo=0  →  12,844 registros  (Histórico)
+2026-06-15 16:18:20,158 | INFO | 🧹 Tabla temporal eliminada en Local
+2026-06-15 16:18:20,927 | INFO | 🧹 Tabla temporal eliminada en Azure
+2026-06-15 16:18:20,930 | INFO | ======================================================================
+2026-06-15 16:18:37,850 | INFO | Período validado: 202510  (año=2025, mes=10)
+2026-06-15 16:18:37,852 | INFO | Registros en archivo fuente: 4,256
+2026-06-15 16:18:37,856 | INFO | Actualizando tabla 'transporte' (mes actual)...
+2026-06-15 16:18:50,962 | INFO | [Azure] transporte actualizada (TRUNCATE+append)  (4,256 registros)
+2026-06-15 16:18:51,875 | INFO | [Local] transporte actualizada (TRUNCATE+append)  (4,256 registros)
+2026-06-15 16:18:51,879 | INFO | ✅ Tabla 'transporte' actualizada con 4,256 registros
+2026-06-15 16:18:51,971 | INFO | ======================================================================
+2026-06-15 16:18:51,975 | INFO | PASO 1: Obtener estructura de tabla SQL
+2026-06-15 16:18:51,978 | INFO | ======================================================================
+2026-06-15 16:18:53,546 | INFO | ✓ Esquemas Azure y Local son idénticos
+2026-06-15 16:18:53,704 | INFO | ✓ Columna [activo] verificada en ambas bases
+2026-06-15 16:18:53,711 | INFO | Columnas renombradas para coincidir con SQL: {'StandRe LoB': 'STANDRE LOB', 'StandRe detailed LoB': 'STANDRE DETAILED LOB', 'LoB-Inward': 'LOB-INWARD', 'Cumulative SALVAGE': 'CUMULATIVE SALVAGE', 'Cumulative EXPENSES PAID': 'CUMULATIVE EXPENSES PAID', 'Cumulative VALUATION EXPENSES': 'CUMULATIVE VALUATION EXPENSES', 'Cumulative CLAIMS PAID': 'CUMULATIVE CLAIMS PAID', 'Total Claims Paid Inward': 'TOTAL CLAIMS PAID INWARD', 'Total Claims Paid no Alae': 'TOTAL CLAIMS PAID NO ALAE', 'OSLR Inward': 'OSLR INWARD', 'Inward Incurred': 'INWARD INCURRED', 'Inward Incurred no Alae': 'INWARD INCURRED NO ALAE', 'UW Year': 'UW YEAR', 'Nat Cat': 'NAT CAT'}
+2026-06-15 16:18:53,713 | INFO | ✓ Columnas válidas (intersección Excel∩SQL): 40
+2026-06-15 16:18:53,716 | WARNING | Columnas solo en SQL (quedarán NULL en el insert): ['FLAG CONTA']
+2026-06-15 16:18:53,720 | INFO | ======================================================================
+2026-06-15 16:18:53,723 | INFO | PASO 2: Preparar datos del Excel
+2026-06-15 16:18:53,725 | INFO | ======================================================================
+2026-06-15 16:18:53,745 | INFO | ✓ 4,256 registros preparados con activo = 1
+2026-06-15 16:18:53,749 | INFO | ======================================================================
+2026-06-15 16:18:53,751 | INFO | PASO 3: Cargar datos a tabla temporal
+2026-06-15 16:18:53,753 | INFO | ======================================================================
+2026-06-15 16:18:54,864 | INFO | [Local] Tabla temporal creada con replace (4,256 registros)
+2026-06-15 16:19:07,802 | INFO | [Azure] Tabla temporal creada con replace (4,256 registros)
+2026-06-15 16:19:07,904 | WARNING | Mismatches de tipo detectados:
+             COLUMN_NAME tipo_hist tipo_temp
+           ACCIDENT YEAR       int    bigint
+                  activo       int    bigint
+            DATE OF LOSS      date  datetime
+          DATE OF REPORT      date  datetime
+               MES CARGA      date  datetime
+  POLICY PERIOD END DATE      date  datetime
+POLICY PERIOD START DATE      date  datetime
+                 UW YEAR       int    bigint
+     YEAR OF THE RESERVE       int    bigint
+2026-06-15 16:19:07,911 | INFO | ======================================================================
+2026-06-15 16:19:07,914 | INFO | PASO 4: Carga atómica en transportehist
+2026-06-15 16:19:07,916 | INFO | ======================================================================
+2026-06-15 16:19:07,978 | INFO | [Local] DELETE: 4,252 registros del período 202510 eliminados
+2026-06-15 16:19:08,025 | INFO | [Local] Desactivados: 4,251 registros → activo=0
+2026-06-15 16:19:08,100 | INFO | [Local] Insertados: 4,256 registros → activo=1
+2026-06-15 16:19:08,160 | INFO | [Local] ✅ Transacción OK — antes=17,095  deleted=4,252  inserted=4,256  esperado_despues=17,099
+2026-06-15 16:19:15,698 | INFO | [Azure] DELETE: 4,252 registros del período 202510 eliminados
+2026-06-15 16:19:20,616 | INFO | [Azure] Desactivados: 4,251 registros → activo=0
+2026-06-15 16:19:28,055 | INFO | [Azure] Insertados: 4,256 registros → activo=1
+2026-06-15 16:19:28,508 | INFO | [Azure] ✅ Transacción OK — antes=17,095  deleted=4,252  inserted=4,256  esperado_despues=17,099
+2026-06-15 16:19:28,612 | INFO | ======================================================================
+2026-06-15 16:19:28,616 | INFO | RESUMEN FINAL
+2026-06-15 16:19:28,618 | INFO | ======================================================================
+2026-06-15 16:19:29,077 | INFO | transportehist Azure — distribución por activo:
+2026-06-15 16:19:29,081 | INFO |    activo=1  →  4,256 registros  (MES ACTIVO (202510))
+2026-06-15 16:19:29,084 | INFO |    activo=0  →  12,843 registros  (Histórico)
+2026-06-15 16:19:29,102 | INFO | 🧹 Tabla temporal eliminada en Local
+2026-06-15 16:19:29,319 | INFO | 🧹 Tabla temporal eliminada en Azure
+2026-06-15 16:19:29,321 | INFO | ======================================================================
+2026-06-15 16:21:36,241 | INFO | Período validado: 202512  (año=2025, mes=12)
+2026-06-15 16:21:36,244 | INFO | Registros en archivo fuente: 4,276
+2026-06-15 16:21:36,247 | INFO | Actualizando tabla 'transporte' (mes actual)...
+2026-06-15 16:21:52,908 | INFO | [Azure] transporte actualizada (TRUNCATE+append)  (4,276 registros)
+2026-06-15 16:21:53,764 | INFO | [Local] transporte actualizada (TRUNCATE+append)  (4,276 registros)
+2026-06-15 16:21:53,765 | INFO | ✅ Tabla 'transporte' actualizada con 4,276 registros
+2026-06-15 16:21:53,822 | INFO | ======================================================================
+2026-06-15 16:21:53,824 | INFO | PASO 1: Obtener estructura de tabla SQL
+2026-06-15 16:21:53,826 | INFO | ======================================================================
+2026-06-15 16:21:54,753 | INFO | ✓ Esquemas Azure y Local son idénticos
+2026-06-15 16:21:54,938 | INFO | ✓ Columna [activo] verificada en ambas bases
+2026-06-15 16:21:54,944 | INFO | Columnas renombradas para coincidir con SQL: {'StandRe LoB': 'STANDRE LOB', 'StandRe detailed LoB': 'STANDRE DETAILED LOB', 'LoB-Inward': 'LOB-INWARD', 'Cumulative SALVAGE': 'CUMULATIVE SALVAGE', 'Cumulative EXPENSES PAID': 'CUMULATIVE EXPENSES PAID', 'Cumulative VALUATION EXPENSES': 'CUMULATIVE VALUATION EXPENSES', 'Cumulative CLAIMS PAID': 'CUMULATIVE CLAIMS PAID', 'Total Claims Paid Inward': 'TOTAL CLAIMS PAID INWARD', 'Total Claims Paid no Alae': 'TOTAL CLAIMS PAID NO ALAE', 'OSLR Inward': 'OSLR INWARD', 'Inward Incurred': 'INWARD INCURRED', 'Inward Incurred no Alae': 'INWARD INCURRED NO ALAE', 'UW Year': 'UW YEAR', 'Nat Cat': 'NAT CAT'}
+2026-06-15 16:21:54,947 | INFO | ✓ Columnas válidas (intersección Excel∩SQL): 40
+2026-06-15 16:21:54,950 | WARNING | Columnas solo en SQL (quedarán NULL en el insert): ['FLAG CONTA']
+2026-06-15 16:21:54,951 | INFO | ======================================================================
+2026-06-15 16:21:54,953 | INFO | PASO 2: Preparar datos del Excel
+2026-06-15 16:21:54,955 | INFO | ======================================================================
+2026-06-15 16:21:54,970 | INFO | ✓ 4,276 registros preparados con activo = 1
+2026-06-15 16:21:54,974 | INFO | ======================================================================
+2026-06-15 16:21:54,976 | INFO | PASO 3: Cargar datos a tabla temporal
+2026-06-15 16:21:54,979 | INFO | ======================================================================
+2026-06-15 16:21:55,935 | INFO | [Local] Tabla temporal creada con replace (4,276 registros)
+2026-06-15 16:22:11,333 | INFO | [Azure] Tabla temporal creada con replace (4,276 registros)
+2026-06-15 16:22:11,428 | WARNING | Mismatches de tipo detectados:
+             COLUMN_NAME tipo_hist tipo_temp
+           ACCIDENT YEAR       int    bigint
+                  activo       int    bigint
+            DATE OF LOSS      date  datetime
+          DATE OF REPORT      date  datetime
+               MES CARGA      date  datetime
+  POLICY PERIOD END DATE      date  datetime
+POLICY PERIOD START DATE      date  datetime
+                 UW YEAR       int    bigint
+     YEAR OF THE RESERVE       int    bigint
+2026-06-15 16:22:11,433 | INFO | ======================================================================
+2026-06-15 16:22:11,435 | INFO | PASO 4: Carga atómica en transportehist
+2026-06-15 16:22:11,436 | INFO | ======================================================================
+2026-06-15 16:22:11,499 | INFO | [Local] DELETE: 4,272 registros del período 202512 eliminados
+2026-06-15 16:22:11,553 | INFO | [Local] Desactivados: 4,256 registros → activo=0
+2026-06-15 16:22:11,640 | INFO | [Local] Insertados: 4,276 registros → activo=1
+2026-06-15 16:22:11,699 | INFO | [Local] ✅ Transacción OK — antes=17,099  deleted=4,272  inserted=4,276  esperado_despues=17,103
+2026-06-15 16:22:20,323 | INFO | [Azure] DELETE: 4,272 registros del período 202512 eliminados
+2026-06-15 16:22:24,923 | INFO | [Azure] Desactivados: 4,256 registros → activo=0
+2026-06-15 16:22:32,417 | INFO | [Azure] Insertados: 4,276 registros → activo=1
+2026-06-15 16:22:33,036 | INFO | [Azure] ✅ Transacción OK — antes=17,099  deleted=4,272  inserted=4,276  esperado_despues=17,103
+2026-06-15 16:22:33,258 | INFO | ======================================================================
+2026-06-15 16:22:33,260 | INFO | RESUMEN FINAL
+2026-06-15 16:22:33,262 | INFO | ======================================================================
+2026-06-15 16:22:34,616 | INFO | transportehist Azure — distribución por activo:
+2026-06-15 16:22:34,619 | INFO |    activo=1  →  4,276 registros  (MES ACTIVO (202512))
+2026-06-15 16:22:34,621 | INFO |    activo=0  →  12,827 registros  (Histórico)
+2026-06-15 16:22:34,646 | INFO | 🧹 Tabla temporal eliminada en Local
+2026-06-15 16:22:35,184 | INFO | 🧹 Tabla temporal eliminada en Azure
+2026-06-15 16:22:35,186 | INFO | ======================================================================
