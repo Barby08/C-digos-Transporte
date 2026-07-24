@@ -9,7 +9,10 @@
       "Bash(python)",
       "PowerShell(python \"C:\\\\Users\\\\IKAL14\\\\AppData\\\\Local\\\\Temp\\\\fix_dups.py\")",
       "PowerShell(python \"C:\\\\Users\\\\IKAL14\\\\AppData\\\\Local\\\\Temp\\\\read_cells.py\" | Out-File -Encoding utf8 \"$env:TEMP\\\\read_cells.txt\"; Get-Content \"$env:TEMP\\\\read_cells.txt\")",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(powershell -Command \"Get-ChildItem 'C:\\\\Users\\\\IKAL14\\\\OneDrive - Kot Insurance Company AG\\\\Transporte, Carga y Embarcaciones\\\\' -Filter '*Siniestros_Marine_MANUAL*' -Force | Select-Object Name, Length, Attributes, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-Process EXCEL -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, MainWindowTitle\")",
+      "Bash(powershell -Command 'Get-Process | Where-Object {$_.ProcessName -match '\\\\''python|EXCEL'\\\\''} | Select-Object Id, ProcessName')"
     ]
   }
 }
