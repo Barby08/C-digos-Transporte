@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentacion del Proceso Marine</title>
+<style>
+:root{
+  --bg:#f7f8fa; --panel:#ffffff; --ink:#1c2430; --muted:#5c6b7f;
+  --line:#e2e6ec; --accent:#0f4c81; --accent-soft:#e8f0f8; --mark:#ffe89e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     background:var(--bg);color:var(--ink);line-height:1.65;font-size:16px}
+#layout{display:flex;min-height:100vh}
+/* ---------- sidebar ---------- */
+#side{width:320px;flex:0 0 320px;background:var(--panel);border-right:1px solid var(--line);
+      position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 18px}
+#side h1{font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+#q{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;
+   background:#fbfcfd;outline:none}
+#q:focus{border-color:var(--accent);background:#fff}
+#hits{font-size:12px;color:var(--muted);margin:8px 2px 12px;min-height:16px}
+#toc{list-style:none;margin:0;padding:0}
+#toc li{margin:0}
+#toc a{display:block;padding:6px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px}
+#toc a:hover{background:var(--accent-soft)}
+#toc a.lvl2{padding-left:24px;font-size:13.5px;color:var(--muted)}
+#toc a.lvl3{padding-left:38px;font-size:13px;color:var(--muted)}
+#toc a.active{background:var(--accent);color:#fff}
+/* ---------- content ---------- */
+#main{flex:1;min-width:0;padding:42px 56px 120px;max-width:960px}
+#main h1{font-size:30px;margin:52px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--accent);scroll-margin-top:20px}
+#main h1:first-child{margin-top:0}
+#main h2{font-size:22px;margin:34px 0 10px;color:var(--accent);scroll-margin-top:20px}
+#main h3{font-size:17px;margin:24px 0 8px;scroll-margin-top:20px}
+#main p{margin:10px 0}
+table{border-collapse:collapse;width:100%;margin:18px 0;font-size:14.5px;background:var(--panel);
+      border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th{background:var(--accent-soft);text-align:left;font-weight:600;color:var(--accent)}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+code{background:#eef1f5;padding:2px 6px;border-radius:4px;font-size:14px;
+     font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#1c2430;color:#e6edf3;padding:16px 18px;border-radius:10px;overflow-x:auto;font-size:14px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{margin:18px 0;padding:12px 18px;background:var(--accent-soft);
+           border-left:4px solid var(--accent);border-radius:0 8px 8px 0}
+blockquote p{margin:0}
+ul,ol{padding-left:22px}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+mark{background:var(--mark);padding:0 2px;border-radius:2px}
+.hidden{display:none !important}
+.header-note{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+             padding:18px 22px;margin-bottom:12px}
+.header-note .t{font-size:26px;font-weight:700;margin:0}
+.header-note .s{color:var(--muted);margin:4px 0 0;font-size:15px}
+@media(max-width:900px){
+  #layout{flex-direction:column}
+  #side{width:100%;flex:none;position:static;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+  #main{padding:24px 20px 80px}
+}
+</style>
+</head>
+<body>
+<div id="layout">
+  <nav id="side">
+    <h1>Indice</h1>
+    <input id="q" type="search" placeholder="Buscar en el documento..." autocomplete="off">
+    <div id="hits"></div>
+    <ul id="toc"></ul>
+  </nav>
+  <main id="main">
+    <div class="header-note">
+      <p class="t">Documentacion del Proceso Marine</p>
+      <p class="s">Transporte, Carga y Embarcaciones &middot; Cierre mensual de siniestros &middot; Area Actuarial, Kot Insurance Company AG</p>
+    </div>
+<h1 id="para-qué-sirve-este-proceso">1. Para qué sirve este proceso</h1>
+<p>Cada mes, las aseguradoras cedentes (Inbursa, Atlas, Banorte, Mapfre) envían a Kot un reporte de siniestros llamado <strong>BDX</strong> (bordereaux). Ese reporte dice, siniestro por siniestro, cuánto esperan pagar y cuánto ya pagaron.</p>
+<p>Por otro lado, Contabilidad lleva su propio registro de los pagos que efectivamente salieron de caja.</p>
+<p>El proceso Marine hace tres cosas:</p>
+<ol type="1">
+<li><strong>Unifica</strong> los BDX de todas las cedentes en una sola base con el mismo formato.</li>
+<li><strong>Actualiza</strong> la base del mes anterior con la información nueva y calcula la <strong>reserva pendiente (OSLR)</strong> de cada siniestro.</li>
+<li><strong>Valida</strong> que lo que dice el BDX, lo que dice Contabilidad y lo que calculó el sistema coincidan; deja evidencia en Excel de cada diferencia.</li>
+</ol>
+<p>El resultado final es la base de siniestros del mes, que se publica en Excel y se carga a la base de datos SQL que alimenta los reportes y dashboards.</p>
+<blockquote>
+<p><strong>Regla de oro del proceso:</strong> nunca se sobrescribe información sin dejar rastro. Cada ajuste automático genera un archivo de auditoría en la carpeta <code>Incidencias</code>.</p>
+</blockquote>
+<hr />
+<h1 id="glosario-leer-antes-que-nada">2. Glosario (leer antes que nada)</h1>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Término</th>
+<th>Qué significa en palabras simples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>BDX / Bordereaux</strong></td>
+<td>Reporte mensual en Excel que manda la aseguradora cedente con el detalle de sus siniestros. Es el insumo principal.</td>
+</tr>
+<tr class="even">
+<td><strong>Cedente</strong></td>
+<td>La aseguradora que le cede el riesgo a Kot (Inbursa, Atlas, Banorte, Mapfre).</td>
+</tr>
+<tr class="odd">
+<td><strong>CLAIM NUMBER</strong></td>
+<td>Número de siniestro. Es el identificador principal de cada caso.</td>
+</tr>
+<tr class="even">
+<td><strong>GROSS RESERVE</strong></td>
+<td>Reserva bruta: lo que la cedente estima que costará el siniestro completo.</td>
+</tr>
+<tr class="odd">
+<td><strong>DEDUCTIBLE</strong></td>
+<td>Deducible: la parte que absorbe el asegurado y que no se le paga.</td>
+</tr>
+<tr class="even">
+<td><strong>OSLR</strong></td>
+<td><em>Outstanding Loss Reserve</em> — la reserva que <strong>todavía está pendiente de pagar</strong>. Es el número más importante del proceso. Se calcula como: reserva bruta − deducible − lo ya pagado (y nunca es negativo).</td>
+</tr>
+<tr class="odd">
+<td><strong>Net Reserve (USD)</strong></td>
+<td>Reserva neta que viene ya calculada en el BDX. Sirve para verificar el OSLR calculado.</td>
+</tr>
+<tr class="even">
+<td><strong>LoB-Inward</strong></td>
+<td>Línea de negocio del siniestro, ya estandarizada (CASCO Y MAQ., P&amp;I, CARGA, etc.).</td>
+</tr>
+<tr class="odd">
+<td><strong>COVER / COVERAGE</strong></td>
+<td>Cobertura tal como viene escrita en el BDX, antes de estandarizar. Suele venir con erratas y variantes.</td>
+</tr>
+<tr class="even">
+<td><strong>KEY LOB</strong></td>
+<td>Llave de cruce = <code>CLAIM NUMBER</code> + <code>LoB-Inward</code>. Se usa para casar la base con la información contable.</td>
+</tr>
+<tr class="odd">
+<td><strong>KEY DED</strong></td>
+<td>Llave de cruce que incluye el deducible. Se usa cuando un mismo siniestro tiene varias capas de deducible.</td>
+</tr>
+<tr class="even">
+<td><strong>Legacy</strong></td>
+<td>Pólizas antiguas que ya no reciben BDX. Su información se <strong>congela</strong>: no se recalcula, solo se arrastra.</td>
+</tr>
+<tr class="odd">
+<td><strong>Monthly</strong></td>
+<td>Bandera: <code>1</code> = siniestro reportado por primera vez este mes; <code>0</code> = viene de meses anteriores.</td>
+</tr>
+<tr class="even">
+<td><strong>STATUS</strong></td>
+<td>Estado del siniestro: <code>P</code> (pagado/cerrado por pago), <code>C</code> (cancelado), <code>T</code> (abierto con reserva).</td>
+</tr>
+<tr class="odd">
+<td><strong>Incurred</strong></td>
+<td>Costo total del siniestro = lo pagado + lo que queda reservado.</td>
+</tr>
+<tr class="even">
+<td><strong>Zereo (zerear)</strong></td>
+<td>Poner el OSLR en cero de forma deliberada, porque ya no hay nada pendiente por pagar.</td>
+</tr>
+<tr class="odd">
+<td><strong>Payments (AE / CL / VA)</strong></td>
+<td>Archivo contable con tres hojas: <strong>AE</strong> = gastos pagados, <strong>CL</strong> = siniestros pagados, <strong>VA</strong> = gastos de valuación.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="orden-de-ejecución">3. Orden de ejecución</h1>
+<p>Los cinco programas se corren <strong>en orden y una sola vez al mes</strong>. Cada uno depende del archivo que produjo el anterior.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Programa</th>
+<th>Qué hace en una frase</th>
+<th>Produce</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>Carga de Bases Marine</strong></td>
+<td>Lee todos los BDX y los cruza con la base del mes pasado.</td>
+<td><code>bd_update.xlsx</code> / <code>.pkl</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Actualización Contable Marine</strong></td>
+<td>Suma la información de Contabilidad y calcula el OSLR.</td>
+<td><code>{AñoMes}_Siniestros_Marine.xlsx</code></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Validaciones Contables Marine</strong></td>
+<td>Compara la base contra Contabilidad y reporta diferencias.</td>
+<td><code>{AñoMes}_Validaciones_Contables_Marine.xlsx</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>Limpieza Datos Marine</strong></td>
+<td>Estandariza textos, resuelve duplicados y clasifica ubicaciones.</td>
+<td><code>{AñoMes}_Siniestros_Marine_PROCESADO.xlsx</code></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>Actualización de Tablas Marine</strong></td>
+<td>Sube el resultado a SQL Server (Azure y local).</td>
+<td>Tablas <code>transporte</code> y <code>transportehist</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="lo-único-que-hay-que-editar-cada-mes">Lo único que hay que editar cada mes</h2>
+<p>En los programas 1, 2 y 3, al inicio de la sección “Path Definition and Macrovariables”:</p>
+<pre class="python"><code>AñoMes     = 202606   # Periodo que se está cerrando
+AñoMes_ant = 202604   # Último periodo con información procesada</code></pre>
+<p>En los programas 4 y 5, la variable equivalente:</p>
+<pre class="python"><code>PERIODO = &quot;202606&quot;    # Programa 4
+AñoMes  = &quot;202606&quot;    # Programa 5</code></pre>
+<p>Todos los programas leen sus catálogos y diccionarios de un archivo central, <code>config_marine.py</code>, ubicado en <code>.../Marine/Diccionarios</code>. Ahí viven las listas de pólizas legacy, el mapa de coberturas (<code>COVER_MAP</code>), el mapa de líneas de negocio (<code>MAP_LOB_INWARD</code>) y las excepciones manuales. <strong>Si cambia una regla de negocio, se cambia ahí y aplica a todos los programas a la vez.</strong></p>
+<hr />
+<h1 id="programa-1-carga-de-bases-marine">4. Programa 1 — Carga de Bases Marine</h1>
+<p><strong>Objetivo:</strong> juntar todos los BDX del mes en una sola tabla estandarizada y cruzarla contra la base del mes anterior, para saber qué registros hay que actualizar.</p>
+<p><strong>Insumos:</strong> los archivos BDX de cada cedente en <code>Insumos/{AñoMes}/</code>, más la base procesada del mes anterior (<code>{AñoMes_ant}_Siniestros_Marine_PROCESADO.xlsx</code>).</p>
+<p><strong>Salida:</strong> <code>Procesados/{AñoMes}/bd_update.xlsx</code> y <code>bd_update.pkl</code> — la base “en proceso”, todavía sin información contable.</p>
+<h2 id="bloque-1-librerías-y-configuración-secciones-1-y-1.5">Bloque 1 — Librerías y configuración (secciones 1 y 1.5)</h2>
+<p>Limpia la memoria de ejecuciones previas, carga las librerías de Python y trae todos los catálogos desde <code>config_marine.py</code>. No hay nada que revisar aquí.</p>
+<h2 id="bloque-2-periodo-y-carpetas-sección-2">Bloque 2 — Periodo y carpetas (sección 2)</h2>
+<p>Se fija el mes que se va a procesar y se calculan a partir de él las fechas de corte y el nombre del mes en español (los BDX vienen nombrados “JUNIO 2026”, por ejemplo).</p>
+<p>También <strong>crea automáticamente</strong> la estructura de carpetas del mes si no existe: <code>Bases</code>, <code>Incidencias</code>, <code>Insumos</code>, <code>Procesados</code>, <code>Validaciones</code>, cada una con su subcarpeta del periodo.</p>
+<h2 id="bloque-3-rutas-de-los-bdx-sección-3">Bloque 3 — Rutas de los BDX (sección 3)</h2>
+<p>Define en qué ruta exacta está el archivo de cada cedente. Los nombres de archivo se arman con el mes en texto, así que <strong>si la cedente cambia el nombre del archivo, aquí es donde truena</strong> y hay que ajustar la ruta.</p>
+<p>Actualmente se leen, entre otros: Inbursa (casco, P&amp;I y transporte, en tres rangos de años), Aguas Profundas, Banorte (póliza NCGL-070-1000773), Atlas (E01-2-60-3 y E01-2-60-10), Pemex REAS (NCGL-070-1002258) y Mapfre.</p>
+<h2 id="bloque-4-funciones-de-lectura-y-estandarización-secciones-4-4b-4c">Bloque 4 — Funciones de lectura y estandarización (secciones 4, 4B, 4C)</h2>
+<p>Este es el corazón técnico del programa. Cada BDX viene con un formato distinto, así que la función <code>import_format()</code> hace lo siguiente en cada hoja de cada archivo:</p>
+<ul>
+<li><strong>Corta la hoja donde dice “FIN”</strong>, para no arrastrar notas al pie ni firmas.</li>
+<li><strong>Detecta si la hoja trae dos bloques en paralelo (KOT y CEDANT)</strong> y se queda exclusivamente con las cifras de KOT. Nunca mezcla ambos: sería un error financiero.</li>
+<li><strong>Descarta filas de totales.</strong> Una fila de totales de Excel se parece mucho a la continuación de un siniestro; si se cuela, infla la reserva. El programa la detecta por dos señales (la palabra “TOTAL” en la primera columna, o que su monto sea igual a la suma de todas las demás filas) y <strong>detiene la ejecución</strong> si la encuentra, en vez de dejar pasar un dato corrupto.</li>
+<li><strong>Une siniestros partidos en varias filas</strong> (celdas combinadas, o numeración tipo <code>458</code> y <code>458.1</code>): suma los montos y conserva los datos de identidad del primer renglón.</li>
+</ul>
+<p>Adicionalmente, el bloque 4B estandariza las coberturas: limpia el texto (quita paréntesis, truncados, acentos), lo busca en el catálogo <code>COVER_MAP</code> y lo convierte al <code>LoB-Inward</code> canónico. Las coberturas que <strong>no</strong> hacen match se llaman <em>huérfanas</em> y se exportan a <code>Huerfanos_COVER_{AñoMes}.xlsx</code> para que alguien las clasifique.</p>
+<h2 id="bloque-5-lectura-por-cedente-sección-5">Bloque 5 — Lectura por cedente (sección 5)</h2>
+<p>Un bloque por cada BDX. Cada uno selecciona las columnas que interesan de ese archivo en particular, las renombra al estándar y aplica <code>import_format()</code>. Son bloques repetitivos por necesidad: cada cedente nombra sus columnas distinto.</p>
+<h2 id="bloque-6-base-bdx-consolidada-sección-6">Bloque 6 — Base BDX consolidada (sección 6)</h2>
+<p>Junta todos los BDX en una sola tabla (<code>df_bdx_consolidated</code>), conservando de qué archivo y hoja salió cada fila (útil para rastrear un dato hasta su origen).</p>
+<p>Aquí también:</p>
+<ul>
+<li>Convierte reserva y deducible a números. Los ceros se tratan como “sin dato”, <strong>excepto en <code>Net Reserve (USD)</code></strong>, donde un cero sí es un valor válido y se conserva.</li>
+<li>Elimina registros sin número de siniestro (después de mostrarlos en pantalla por si traían montos).</li>
+<li>Aplica el mapeo de coberturas y genera el reporte de huérfanas.</li>
+<li>Exporta la consolidada a <code>{AñoMes}_BDX_Marine.xlsx</code> como respaldo.</li>
+</ul>
+<h2 id="bloque-7-base-de-registros-nuevos-del-mes-sección-7">Bloque 7 — Base de registros nuevos del mes (sección 7)</h2>
+<p>Separa los siniestros <strong>reportados por primera vez en el mes</strong> (fecha de reporte dentro del periodo) y los marca con <code>Monthly = 1</code>. Si alguno tiene fecha de siniestro posterior al cierre del mes, lo señala como incidencia para revisar.</p>
+<h2 id="bloque-8-base-del-mes-anterior-y-separación-de-legacy-secciones-8-y-8b">Bloque 8 — Base del mes anterior y separación de legacy (secciones 8 y 8b)</h2>
+<p>Carga la base procesada del mes pasado, que es el punto de partida (“pivote”) porque su información ya fue validada.</p>
+<p>Enseguida hace el <strong>split legacy/activos</strong>: las pólizas legacy se apartan en una tabla separada y no vuelven a tocarse hasta el final del programa. Así se garantiza —por diseño, no por disciplina— que ningún cálculo posterior las modifique. Si al separar se pierde o duplica un solo registro, <strong>el proceso se detiene</strong>.</p>
+<p>Cierra con una validación de integridad: verifica que se hayan cargado al menos 3,500 registros, que ningún número de siniestro venga vacío, e imprime los totales financieros del mes anterior para comparación visual.</p>
+<h2 id="bloque-9-primera-validación-reserva-y-deducible-sección-9">Bloque 9 — Primera validación: reserva y deducible (sección 9)</h2>
+<p>Compara, siniestro por siniestro, la reserva y el deducible de la base actuarial contra los del BDX del mes. Produce tres reportes:</p>
+<ul>
+<li><code>no_cruzan.xlsx</code> — siniestros que están en una base y no en la otra, sin justificación conocida.</li>
+<li><code>Validacion_deducible.xlsx</code> — casos donde el deducible cambió de un mes a otro.</li>
+<li><code>Validacion_GR.xlsx</code> — casos donde la reserva bruta cambió teniendo pagos y reserva abierta.</li>
+</ul>
+<p>Existe una lista de excepciones conocidas (<code>list_nocross</code>) para los casos que ya se revisaron y están en espera de respuesta de la cedente; esos no se reportan de nuevo cada mes.</p>
+<h2 id="bloque-10-cruce-de-la-base-actualizable-con-el-bdx-sección-10">Bloque 10 — Cruce de la base actualizable con el BDX (sección 10)</h2>
+<p>El cruce principal. Se hace primero por <code>KEY DED</code> (siniestro + deducible), que es la llave más específica.</p>
+<p>Antes del cruce se apartan tres grupos:</p>
+<ul>
+<li><strong>No actualizables:</strong> siniestros con justificación documentada para conservar la cifra actuarial (cancelados, ajustes ya acordados).</li>
+<li><strong>Ajustes manuales:</strong> siniestros con erratas conocidas o duplicados que se corrigen a mano.</li>
+<li><strong>Claims nuevos del BDX:</strong> siniestros que aparecen en el BDX y no existían en la base anterior; se incorporan, evitando duplicarlos con los que ya entraron como <code>Monthly = 1</code>.</li>
+</ul>
+<p>Después del cruce se verifica que el número de registros antes y después coincida. Cualquier llave duplicada que no esté en la lista de duplicados conocidos se imprime en pantalla para revisión.</p>
+<h2 id="bloque-11-unión-de-base-actualizable-y-base-mensual-sección-11">Bloque 11 — Unión de base actualizable y base mensual (sección 11)</h2>
+<p>Pega los registros nuevos del mes debajo de los que vienen de meses anteriores, con la bandera <code>Monthly</code> para distinguirlos.</p>
+<h2 id="bloque-12-segunda-validación-fechas-y-deducible-secciones-12-y-12b">Bloque 12 — Segunda validación: fechas y deducible (secciones 12 y 12b)</h2>
+<p>Sobre los registros de meses anteriores, revisa que las fechas de siniestro y de reporte no hayan cambiado respecto al BDX. Un cambio de fecha (sobre todo de mes) suele indicar un error de captura en el BDX, así que se levanta advertencia.</p>
+<h2 id="bloque-13-reintegro-de-legacy-y-formato-final-sección-13">Bloque 13 — Reintegro de legacy y formato final (sección 13)</h2>
+<p>Vuelve a unir las pólizas legacy —intactas, sin haber pasado por ningún cálculo— con el resto de la base, elimina las columnas auxiliares del cruce y ordena las columnas.</p>
+<h2 id="bloque-14-exportación-sección-14">Bloque 14 — Exportación (sección 14)</h2>
+<p>Redondea a dos decimales, limpia caracteres que Excel no acepta y exporta <code>bd_update.xlsx</code> y <code>bd_update.pkl</code>. Imprime el conteo final: cuántos registros vienen de meses pasados, cuántos son nuevos y cuántos son ajustes manuales.</p>
+<hr />
+<h1 id="programa-2-actualización-contable-marine">5. Programa 2 — Actualización Contable Marine</h1>
+<p><strong>Objetivo:</strong> incorporar los pagos reales de Contabilidad y calcular el OSLR de cada siniestro. Este programa produce <strong>la base final del mes</strong>.</p>
+<p><strong>Insumos:</strong> <code>bd_update.pkl</code> (del programa 1) y <code>Payments_{AñoMes}.xlsx</code> (Contabilidad, con hojas AE, CL y VA).</p>
+<p><strong>Salidas:</strong> <code>Procesados/{AñoMes}/Final/{AñoMes}_Siniestros_Marine.xlsx</code> y <code>.pkl</code>, más varios archivos de auditoría en <code>Incidencias</code>.</p>
+<h2 id="bloque-1-configuración-y-carga-secciones-1-a-3">Bloque 1 — Configuración y carga (secciones 1 a 3)</h2>
+<p>Fija el periodo, arma las rutas y carga la base del programa anterior. Al cargarla:</p>
+<ul>
+<li><strong>Normaliza el número de siniestro</strong> (quita todos los espacios) y la línea de negocio, para que la llave de cruce sea idéntica entre periodos. Sin esto, un siniestro con un espacio de más se vería como un siniestro distinto cada mes.</li>
+<li><strong>Construye <code>KEY LOB</code></strong> = siniestro + línea de negocio.</li>
+<li><strong>Renombra las columnas del mes anterior</strong> agregándoles el periodo (<code>GROSS RESERVE 202604</code>), para poder comparar mes contra mes en la misma tabla.</li>
+</ul>
+<p>Luego lee el archivo de Contabilidad y lo separa en tres tablas: gastos (AE), siniestros pagados (CL) y gastos de valuación (VA).</p>
+<h2 id="bloque-2-formato-de-la-información-contable-sección-4">Bloque 2 — Formato de la información contable (sección 4)</h2>
+<p>El bloque más largo del programa. Sobre las tres tablas contables:</p>
+<ol type="1">
+<li>Convierte fechas y limpia textos.</li>
+<li>Estandariza la línea de negocio con el mismo catálogo que usa el programa 1, y construye <code>KEY LOB</code>.</li>
+<li><strong>Filtra por fecha:</strong> solo se consideran movimientos del periodo en curso.</li>
+<li><strong>Filtra por línea de negocio:</strong> solo lo que corresponde a Marine.</li>
+<li><strong>Filtra por póliza vigente:</strong> solo generan movimiento los siniestros que están declarados en el BDX del mes. Los pagos sobre pólizas no vigentes se <strong>excluyen pero se reportan</strong> en <code>CLAIMS_SIN_POLIZA_VIGENTE_{AñoMes}.xlsx</code>, para no perder trazabilidad del monto.</li>
+<li><strong>Excluye pólizas de empresas subsidiarias.</strong></li>
+<li>Agrupa por <code>KEY LOB</code> y consolida en una sola tabla contable.</li>
+</ol>
+<p>Al final corre una <strong>reconciliación</strong>: compara lo que sí llegó a la base final contra el archivo crudo de Contabilidad, por cada concepto. Si al reagrupar por póliza el monto total cambia aunque sea un centavo, el proceso se detiene.</p>
+<h2 id="bloque-3-cruce-de-la-base-con-contabilidad-sección-5">Bloque 3 — Cruce de la base con Contabilidad (sección 5)</h2>
+<p>Une la base de siniestros con la información contable por <code>KEY LOB</code>, en siete pasos:</p>
+<ol type="1">
+<li>Limpia columnas duplicadas de ejecuciones anteriores (<code>_x</code>, <code>_y</code>).</li>
+<li>Hace el cruce.</li>
+<li>Consolida columnas duplicadas y rellena nulos.</li>
+<li><strong>Evita doble conteo</strong> cuando un mismo <code>KEY LOB</code> tiene varias filas (caso multi-deducible). La regla: si el monto es idéntico en todas las filas, es el mismo pago duplicado por el cruce y se cuenta una sola vez; si difiere entre filas, son pagos de capas distintas y sí se suman.</li>
+<li>Incorpora siniestros que solo existen en Contabilidad.</li>
+<li>Consolida los campos de identidad remanentes.</li>
+<li>Validación final de consistencia.</li>
+</ol>
+<h2 id="bloque-4-cálculo-del-oslr-sección-6">Bloque 4 — Cálculo del OSLR (sección 6)</h2>
+<p>El cálculo central del proceso, en tres pasos.</p>
+<h3 id="paso-1-cálculo-base">Paso 1 — Cálculo base</h3>
+<pre><code>Cumulative CLAIMS PAID = gastos + valuación + siniestros pagados (mes anterior + mes actual)
+
+OSLR = máximo( máximo(GROSS RESERVE − DEDUCTIBLE, 0) − Cumulative CLAIMS PAID , 0 )</code></pre>
+<p>En palabras: lo que queda por pagar es la reserva menos el deducible, menos lo que ya se pagó. Nunca puede ser negativo. <strong>Las pólizas legacy quedan fuera de este cálculo.</strong></p>
+<h3 id="paso-2-verificación-contra-el-bdx">Paso 2 — Verificación contra el BDX</h3>
+<p>Se compara el OSLR calculado contra el <code>Net Reserve (USD)</code> que trae el BDX, pero <strong>solo</strong> en siniestros no legacy, abiertos (<code>STATUS = P</code>) y cuando el BDX reporta reserva neta en cero:</p>
+<ul>
+<li>Si el BDX dice cero y el cálculo dice otra cosa → gana el BDX, se fuerza a cero.</li>
+<li>Si el BDX trae cualquier otro valor (incluidos negativos) → se conserva el cálculo, para no introducir reservas negativas.</li>
+</ul>
+<p>Cada ajuste queda registrado en <code>Ajustes_OSLR_vs_NetReserve.xlsx</code>.</p>
+<h3 id="paso-3-las-seis-reglas-de-zereo">Paso 3 — Las seis reglas de “zereo”</h3>
+<p>Se aplican en orden. Cada una reporta en pantalla cuántas filas afecta y cuánto dinero elimina, y <strong>cada siniestro tocado queda registrado en <code>Log_Zereo_OSLR.xlsx</code></strong> con la regla que lo movió y el OSLR antes y después. Eso permite buscar un siniestro en Excel y entender por qué su reserva quedó en cero, sin leer código.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Regla</th>
+<th>Cuándo aplica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>Ruido / redondeo</strong></td>
+<td>El OSLR remanente es insignificante (menor al umbral mínimo configurado).</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Ajuste manual</strong></td>
+<td>El siniestro está en la lista <code>OSLR_ZERO_MANUAL</code> y la vigencia del ajuste no ha expirado.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Previo y esperado en cero</strong></td>
+<td>El OSLR del mes pasado fue cero y el recálculo también da cero. Evita “resurrecciones” artificiales de reserva.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>Legacy nulo</strong></td>
+<td>Póliza legacy abierta cuyo OSLR quedó vacío. Se fuerza a cero.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>Sin cambios en el mes</strong></td>
+<td>Siniestro sin movimiento contable, no nuevo, y con reserva y deducible idénticos al mes pasado. Se conserva el OSLR anterior.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>KEY LOB duplicado</strong></td>
+<td>El mismo <code>KEY LOB</code> aparece varias veces. Si reserva y deducible son iguales en todas las filas, es duplicado del cruce y se conserva el OSLR en una sola. Si difieren, son capas de deducible distintas y se suma el OSLR en la fila principal.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="blindaje-legacy">Blindaje legacy</h3>
+<p>Al terminar el cálculo, un candado estructural fuerza a que las pólizas legacy terminen con reserva y deducible congelados en el valor del mes anterior y OSLR en cero — pase lo que pase en el código anterior. Sus pagos contables <strong>sí</strong> siguen fluyendo normal, porque son movimientos de dinero reales. Se guarda una “foto” de estos valores para volver a verificarlos al final del programa.</p>
+<h2 id="bloque-5-validación-de-oslr-y-fechas-sección-7">Bloque 5 — Validación de OSLR y fechas (sección 7)</h2>
+<p>Reporta:</p>
+<ul>
+<li>Siniestros donde el OSLR calculado difiere del esperado por más de un dólar → <code>Incidencias_OSLR.xlsx</code>.</li>
+<li>Siniestros con fechas incoherentes (siniestro posterior al reporte, fechas fuera de la vigencia de la póliza) → <code>Incidencias_fechas.xlsx</code>, con una columna que indica el tipo de error.</li>
+</ul>
+<p>Los siniestros que solo vienen de Contabilidad se excluyen de estas validaciones, porque no tienen fechas.</p>
+<h2 id="bloque-6-validación-empírica-del-oslr-sección-7.5">Bloque 6 — Validación empírica del OSLR (sección 7.5)</h2>
+<p>Una verificación estadística basada en el comportamiento histórico:</p>
+<ul>
+<li>Cuando el OSLR es mayor a cero, en el 98% de los casos el siniestro <strong>no se ha pagado</strong> y fue reportado hace menos de dos años.</li>
+<li>Cuando el OSLR es cero, normalmente el siniestro ya se pagó o es antiguo.</li>
+</ul>
+<p>Los registros que no siguen este patrón se marcan como <strong>atípicos</strong> en <code>Incidencias_OSLR_Patron_Empirico.xlsx</code>. No significa que estén mal — significa que vale la pena mirarlos.</p>
+<h2 id="bloque-7-ajustes-finales-sección-8">Bloque 7 — Ajustes finales (sección 8)</h2>
+<p>Rellena nulos remanentes, estandariza los nombres de pólizas y de subsidiarias (quita “PEMEX”, espacios extra, variantes de escritura), elimina columnas auxiliares y ordena la base.</p>
+<p>Cierra volviendo a comparar las pólizas legacy contra la foto tomada en el bloque 4. Si algo las movió, el proceso se detiene.</p>
+<h2 id="bloque-8-validación-de-pagos-y-exportación-secciones-8-y-9">Bloque 8 — Validación de pagos y exportación (secciones 8 y 9)</h2>
+<p>Antes de exportar, valida que los pagos cuadren por <code>KEY LOB</code>. Si pasa, exporta la base final a Excel y pickle.</p>
+<h2 id="bloque-9-validación-oslr-contra-bdx-sección-10">Bloque 9 — Validación OSLR contra BDX (sección 10)</h2>
+<p>Un reporte de cierre que compara, a nivel póliza, el OSLR calculado contra el del BDX. Lee el archivo <code>OSLR {AñoMes}.xlsx</code> (único insumo externo de este bloque) y genera <code>Validacion_OSLR_{AñoMes}.xlsx</code> con cuatro hojas: <strong>Validación</strong>, <strong>Detalle BDX</strong>, <strong>Log Zereo OSLR</strong> y <strong>Zereos por Póliza</strong>.</p>
+<p>Si falta el archivo de BDX, avisa por consola pero no afecta la base ya exportada.</p>
+<hr />
+<h1 id="programa-3-validaciones-contables-marine">6. Programa 3 — Validaciones Contables Marine</h1>
+<p><strong>Objetivo:</strong> confirmar que la base final coincide con lo que dice Contabilidad, tanto en reservas como en pagos. Es un programa de <strong>control</strong>: no modifica nada, solo compara y reporta.</p>
+<p><strong>Insumos:</strong> la base final del programa 2, el archivo <code>OSLR {AñoMes}.xlsx</code> y <code>Payments_{AñoMes}.xlsx</code>.</p>
+<p><strong>Salida:</strong> <code>Validaciones/{AñoMes}/{AñoMes}_Validaciones_Contables_Marine.xlsx</code>, con dos hojas.</p>
+<h2 id="bloque-1-configuración-secciones-1-a-3">Bloque 1 — Configuración (secciones 1 a 3)</h2>
+<p>Además del periodo actual y el anterior, aquí se define <code>AñoMes_piv</code> — diciembre del año pasado, que sirve como punto de partida para los acumulados del ejercicio.</p>
+<p>Carga la base final, el archivo de OSLR contable y las tres hojas de pagos.</p>
+<h2 id="bloque-2-preparación-de-datos-sección-4">Bloque 2 — Preparación de datos (sección 4)</h2>
+<p>Estandariza fechas, textos y nombres de pólizas y coberturas entre las dos fuentes. Aquí se resuelven diferencias históricas de nomenclatura: <code>P&amp;I</code> vs <code>PANDI</code>, <code>E01-2-60-10</code> vs su forma larga, <code>CascoyMaquinaria</code> vs <code>CASCO Y MAQUINARIA</code>.</p>
+<p>También separa las pólizas que Contabilidad tiene registradas pero <strong>no</strong> pertenecen a Marine, para excluirlas de la comparación.</p>
+<p>Los registros con OSLR en cero se descartan: no aportan nada a una validación de reservas.</p>
+<h2 id="bloque-3-validación-de-oslr-sección-5">Bloque 3 — Validación de OSLR (sección 5)</h2>
+<p>Cruza la reserva pendiente de la base actuarial contra la de Contabilidad, por póliza y cobertura. Marca las llaves que no encuentran par en la otra fuente y calcula la diferencia en pesos. Resultado: hoja <strong>Validacion OSLR</strong>.</p>
+<h2 id="bloque-4-validación-de-pagos-sección-6">Bloque 4 — Validación de pagos (sección 6)</h2>
+<p>Compara los pagos en tres momentos:</p>
+<ul>
+<li><strong>Acumulado al cierre del año anterior</strong> (base pivote).</li>
+<li><strong>Acumulado de la base actuarial</strong> al mes en curso.</li>
+<li><strong>Movimientos del mes</strong> según los archivos de Contabilidad.</li>
+</ul>
+<p>La suma del pivote más los movimientos debe dar el acumulado. Resultado: hoja <strong>Validacion PAGOS</strong>.</p>
+<h2 id="bloque-5-exportación-sección-7">Bloque 5 — Exportación (sección 7)</h2>
+<p>Redondea a dos decimales y escribe el archivo con las dos hojas.</p>
+<hr />
+<h1 id="programa-4-limpieza-de-datos-marine">7. Programa 4 — Limpieza de Datos Marine</h1>
+<p><strong>Objetivo:</strong> dejar la base lista para consumo humano y para el tablero: textos estandarizados, sin duplicados, con ubicación geográfica identificada.</p>
+<p><strong>Insumo:</strong> <code>{AñoMes}_Siniestros_Marine.xlsx</code> (salida del programa 2).</p>
+<p><strong>Salidas:</strong> <code>{AñoMes}_Siniestros_Marine_PROCESADO.xlsx</code>, guardado en <strong>dos ubicaciones</strong> de OneDrive:</p>
+<ul>
+<li>La carpeta de base actuarial (`06. DATABASE / 03 Transporte, Carga &amp; Embarcaciones / 02 Bases Actuarial`).</li>
+<li>La carpeta de trabajo del área (<code>Transporte, Carga y Embarcaciones / {año} / {periodo}</code>).</li>
+</ul>
+<h2 id="bloque-1-carga-y-preparación-secciones-1-a-2">Bloque 1 — Carga y preparación (secciones 1 a 2)</h2>
+<p>Carga el archivo del periodo, deduce año y mes del propio nombre del archivo, crea las carpetas de salida, elimina filas completamente vacías y agrega la columna <code>MES CARGA</code>.</p>
+<h2 id="bloque-2-tratamiento-de-nulos-y-herencia-sección-3">Bloque 2 — Tratamiento de nulos y herencia (sección 3)</h2>
+<p>Cuando un campo viene vacío, el programa intenta deducirlo antes de rendirse:</p>
+<ol type="1">
+<li><strong>Mapeo:</strong> si <code>LoB-Inward</code> está vacío pero <code>COVER</code> tiene un valor válido, lo deduce del catálogo.</li>
+<li><strong>Herencia por siniestro:</strong> si un siniestro tiene varias filas y solo una trae la línea de negocio, la cobertura o las fechas de póliza, ese valor se propaga a las demás filas del mismo siniestro.</li>
+<li><strong>Reconstrucción de llaves:</strong> <code>CLAIMS-ID</code> y <code>KEY LOB</code> se vuelven a armar cuando quedaron dañadas.</li>
+<li>Solo si después de todo eso el campo sigue vacío, se marca como <code>NO ESPECIFICADO</code>.</li>
+</ol>
+<h2 id="bloque-3-limpieza-por-columna-sección-3-continuación">Bloque 3 — Limpieza por columna (sección 3, continuación)</h2>
+<ul>
+<li><strong>Número de póliza y de siniestro:</strong> quita el <code>.0</code> que Excel agrega a los números, las comillas simples y los espacios.</li>
+<li><strong>Descripción y cobertura:</strong> mayúsculas, sin acentos, sin puntuación ruidosa.</li>
+<li><strong>Columnas de relleno fijo:</strong> lo que quede vacío se marca como <code>NO ESPECIFICADO</code>.</li>
+</ul>
+<h2 id="bloque-4-validación-de-status-sección-3-continuación">Bloque 4 — Validación de STATUS (sección 3, continuación)</h2>
+<p>El estado del siniestro es crítico, así que tiene tratamiento especial:</p>
+<ol type="1">
+<li>Normaliza la escritura y detecta los que vienen vacíos o inválidos.</li>
+<li><strong>Rescate:</strong> busca el estado faltante primero en el BDX crudo del periodo, y si no lo encuentra, en las bases procesadas de hasta 12 meses atrás.</li>
+<li>Si aun así queda algún siniestro sin estado, genera un reporte y <strong>detiene la ejecución</strong>. No se publica una base con estados desconocidos.</li>
+<li><strong>Coherencia financiera</strong> (solo para pólizas NCGL-070):
+<ul>
+<li><code>C</code> (cancelado) → pagos en cero y OSLR en cero.</li>
+<li><code>T</code> (abierto) → OSLR mayor a cero.</li>
+<li><code>P</code> (pagado) → pagos mayores a cero y OSLR en cero.</li>
+</ul>
+Si hay violaciones, se reportan y el programa ofrece releer el archivo tras corregir el BDX.</li>
+<li>Regla adicional: si el estado es <code>P</code> y el OSLR es mayor a cero sin justificación documentada, el OSLR se pone en cero y se deja la nota.</li>
+</ol>
+<h2 id="bloque-5-clasificador-de-ubicaciones-sección-3.2">Bloque 5 — Clasificador de ubicaciones (sección 3.2)</h2>
+<p>La columna <code>LOCATION</code> viene como texto libre (“KM 45 AUTOPISTA MEXICO-QUERETARO”, “TAD SALINA CRUZ”, “GOLFO DE MEXICO”). Este bloque deduce <strong>estado</strong> y <strong>país</strong> en una cascada de ocho etapas, deteniéndose en la primera que acierte:</p>
+<ol type="1">
+<li>Ubicaciones internacionales por palabra clave.</li>
+<li>Nombre de estado escrito explícitamente.</li>
+<li>Abreviaturas de estado.</li>
+<li>Autopistas y rutas conocidas.</li>
+<li>Ciudades y municipios (catálogo extenso, estado por estado).</li>
+<li>Terminales PEMEX: TAD, TAR, TASP, ASA y terminales marítimas.</li>
+<li>Instalaciones PEMEX: refinerías, plataformas, complejos.</li>
+<li>Coincidencia aproximada (<em>fuzzy</em>) como último recurso, para tolerar erratas.</li>
+</ol>
+<p>Incluye salvaguardas contra falsos positivos: palabras cortas ambiguas no disparan una clasificación internacional si el texto tiene otras señales de México. Los resultados se cachean, así que ubicaciones repetidas se resuelven una sola vez.</p>
+<h2 id="bloque-6-duplicados-sección-3.3">Bloque 6 — Duplicados (sección 3.3)</h2>
+<p>El caso más delicado del programa: un mismo siniestro puede aparecer en varias filas, y hay que decidir cuál conservar sin perder dinero. La lógica, en orden:</p>
+<ol type="1">
+<li><strong>Mismo <code>KEY LOB</code> → siempre se fusionan</strong> en una sola fila. Son el mismo registro partido por el cruce contable. Los pagos se suman contando <strong>solo los valores únicos distintos de cero</strong>, para no duplicar un monto que ya venía repetido. La fila base se elige por completitud, pero si alguna trae reserva real, la base sale forzosamente de esas.</li>
+<li><strong><code>KEY LOB</code> distinto (multi-deducible legítimo) → gana la fila con pagos reales</strong>, en cualquiera de los tres conceptos (siniestros, gastos o valuación).</li>
+<li>Si hay conflicto entre estado <code>P</code> y <code>C</code>, prevalece <code>C</code>.</li>
+<li>Después se desempata sucesivamente por deducible, definición financiera, pagos, presencia de reserva, estado, valores numéricos, completitud de campos y, al final, un criterio de desempate fijo.</li>
+</ol>
+<p>Al terminar corre una <strong>auditoría de colapso</strong>: compara el estado antes y después de la deduplicación y reporta cuántas filas se fusionaron y si algún monto se movió.</p>
+<p>Finalmente elimina las filas que quedaron con todos los importes en cero, siempre que otra fila del mismo siniestro tenga la misma cobertura (es decir, que no se pierda información).</p>
+<h2 id="bloque-7-exportación-sección-4">Bloque 7 — Exportación (sección 4)</h2>
+<p>Antes de exportar:</p>
+<ul>
+<li><strong>Elimina columnas de trabajo:</strong> todas las que terminan en un periodo (<code>GROSS RESERVE 202504</code>) y las auxiliares del proceso (<code>Monthly</code>, <code>KEY DED</code>, <code>FLAG CONTA</code>, columnas <code>BDX</code>, observaciones internas).</li>
+<li><strong>Valida:</strong> imprime total de registros, siniestros únicos y la distribución de estado, cobertura y línea de negocio; alerta si quedan nulos en campos clave.</li>
+<li>Redondea a dos decimales y escribe el archivo en las dos rutas de OneDrive.</li>
+</ul>
+<hr />
+<h1 id="programa-5-actualización-de-tablas-marine">8. Programa 5 — Actualización de Tablas Marine</h1>
+<p><strong>Objetivo:</strong> publicar la base del mes en SQL Server, para que la consuman los reportes y dashboards.</p>
+<p><strong>Insumo:</strong> <code>{AñoMes}_Siniestros_Marine_PROCESADO.xlsx</code> (salida del programa 4).</p>
+<p><strong>Destino:</strong> dos servidores en paralelo — <strong>Azure</strong> (<code>ikaldb.database.windows.net</code>, base <code>actuarial</code>) y <strong>local</strong> (<code>SQLEXPRESS</code>). Ambos se actualizan con el mismo contenido.</p>
+<h2 id="las-dos-tablas">Las dos tablas</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tabla</th>
+<th>Comportamiento</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>transporte</code></td>
+<td>Se <strong>reemplaza</strong> cada mes. Siempre contiene únicamente el mes más reciente.</td>
+</tr>
+<tr class="even">
+<td><code>transportehist</code></td>
+<td>Se <strong>acumula</strong>. Cada mes se insertan las filas nuevas; la columna <code>activo</code> vale <code>1</code> para el mes más reciente y <code>0</code> para los anteriores.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bloque-1-conexiones-sección-2">Bloque 1 — Conexiones (sección 2)</h2>
+<p>Establece las dos conexiones vía ODBC Driver 17. Azure usa usuario y contraseña; la local usa autenticación de Windows.</p>
+<blockquote>
+<p><strong>Nota de seguridad:</strong> la credencial de Azure está escrita directamente en el notebook. Conviene moverla a una variable de entorno o a <code>config_marine.py</code> para no exponerla en el archivo ni en el historial de git.</p>
+</blockquote>
+<h2 id="bloque-2-carga-y-limpieza-opcional-sección-3">Bloque 2 — Carga y limpieza opcional (sección 3)</h2>
+<p>Lee el Excel del periodo. Incluye una función <code>limpiar_tablas_transporte()</code> que vacía ambas tablas por completo — está <strong>desactivada por defecto</strong> (<code>ejecutar=False</code>) y solo debe activarse para una recarga total.</p>
+<h2 id="bloque-3-carga-de-transporte-sección-4">Bloque 3 — Carga de <code>transporte</code> (sección 4)</h2>
+<p>Valida que el periodo tenga formato correcto y que el DataFrame no venga vacío, luego reemplaza la tabla con el mes actual.</p>
+<p>Detalle técnico relevante: los nombres de columna con caracteres especiales (<code>INWARD POLICY N°</code>, <code>CLAIMS-ID</code>, <code>ATTRITIONAL/LARGE</code>, <code>LoB-Inward</code>) rompen la inserción estándar de SQL Server. Por eso se renombran temporalmente durante el <code>INSERT</code> y la tabla conserva los nombres originales mediante una cláusula de columnas explícita.</p>
+<h2 id="bloque-4-carga-de-transportehist-sección-5">Bloque 4 — Carga de <code>transportehist</code> (sección 5)</h2>
+<p>La carga histórica, en cinco pasos:</p>
+<ol type="1">
+<li><strong>Lee la estructura</strong> de la tabla en SQL y verifica que Azure y local tengan esquemas idénticos.</li>
+<li><strong>Prepara los datos:</strong> convierte fechas y trunca textos que excedan el largo de la columna, dejando registro de cada valor ajustado.</li>
+<li><strong>Carga a una tabla temporal.</strong></li>
+<li><strong>Carga atómica</strong> (todo o nada, una transacción por servidor):
+<ul>
+<li>Cuenta las filas actuales.</li>
+<li>Borra el mes si ya existía — así el programa se puede volver a correr sin duplicar.</li>
+<li>Marca los meses anteriores con <code>activo = 0</code>.</li>
+<li>Inserta el mes nuevo desde la temporal.</li>
+<li>Valida la integridad dentro de la misma transacción; si algo no cuadra, revierte todo.</li>
+</ul></li>
+<li><strong>Resumen y limpieza</strong> de las tablas temporales.</li>
+</ol>
+<hr />
+<h1 id="checklist-mensual">9. Checklist mensual</h1>
+<p><strong>Antes de empezar</strong></p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" />
+Los BDX del mes están en <code>Insumos/{AñoMes}/</code> con los nombres que espera el programa 1.</li>
+<li><input type="checkbox" disabled="" />
+<code>Payments_{AñoMes}.xlsx</code> y <code>OSLR {AñoMes}.xlsx</code> están en la carpeta de Contabilidad.</li>
+<li><input type="checkbox" disabled="" />
+La base procesada del mes anterior existe y es la versión final.</li>
+</ul>
+<p><strong>Durante la ejecución</strong></p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" />
+Programa 1: <code>AñoMes</code> y <code>AñoMes_ant</code> actualizados. Revisar el reporte de coberturas huérfanas y los tres archivos de validación.</li>
+<li><input type="checkbox" disabled="" />
+Programa 2: revisar <code>Log_Zereo_OSLR.xlsx</code> — es la explicación de por qué cada reserva quedó donde quedó.</li>
+<li><input type="checkbox" disabled="" />
+Programa 3: revisar las dos hojas del archivo de validaciones contables; las diferencias deben tener explicación.</li>
+<li><input type="checkbox" disabled="" />
+Programa 4: si se detiene por STATUS faltante, corregir el BDX y volver a correr desde ese punto.</li>
+<li><input type="checkbox" disabled="" />
+Programa 5: confirmar que el conteo de filas insertadas coincide en Azure y en local.</li>
+</ul>
+<p><strong>Al cerrar</strong></p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" />
+La base publicada está en las dos rutas de OneDrive.</li>
+<li><input type="checkbox" disabled="" />
+Las incidencias del mes quedaron archivadas en <code>Incidencias/{AñoMes}/</code>.</li>
+</ul>
+<hr />
+<h1 id="archivos-que-genera-el-proceso">10. Archivos que genera el proceso</h1>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Archivo</th>
+<th>Programa</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>{AñoMes}_BDX_Marine.xlsx</code></td>
+<td>1</td>
+<td>Respaldo del BDX consolidado, antes de cualquier cruce.</td>
+</tr>
+<tr class="even">
+<td><code>Huerfanos_COVER_{AñoMes}.xlsx</code></td>
+<td>1</td>
+<td>Coberturas que no se pudieron clasificar.</td>
+</tr>
+<tr class="odd">
+<td><code>no_cruzan.xlsx</code></td>
+<td>1</td>
+<td>Siniestros presentes en una base y ausentes en la otra.</td>
+</tr>
+<tr class="even">
+<td><code>Validacion_deducible.xlsx</code></td>
+<td>1</td>
+<td>Deducibles que cambiaron respecto al mes anterior.</td>
+</tr>
+<tr class="odd">
+<td><code>Validacion_GR.xlsx</code></td>
+<td>1</td>
+<td>Reservas brutas que cambiaron teniendo pagos y reserva abierta.</td>
+</tr>
+<tr class="even">
+<td><code>bd_update.xlsx</code> / <code>.pkl</code></td>
+<td>1</td>
+<td>Base intermedia, sin información contable.</td>
+</tr>
+<tr class="odd">
+<td><code>CLAIMS_SIN_POLIZA_VIGENTE_{AñoMes}.xlsx</code></td>
+<td>2</td>
+<td>Pagos sobre pólizas no declaradas en el BDX.</td>
+</tr>
+<tr class="even">
+<td><code>Ajustes_OSLR_vs_NetReserve.xlsx</code></td>
+<td>2</td>
+<td>OSLR corregidos usando la reserva neta del BDX.</td>
+</tr>
+<tr class="odd">
+<td><code>Log_Zereo_OSLR.xlsx</code></td>
+<td>2</td>
+<td>Qué regla puso en cero la reserva de cada siniestro.</td>
+</tr>
+<tr class="even">
+<td><code>Incidencias_OSLR.xlsx</code></td>
+<td>2</td>
+<td>Diferencias de OSLR mayores a un dólar.</td>
+</tr>
+<tr class="odd">
+<td><code>Incidencias_fechas.xlsx</code></td>
+<td>2</td>
+<td>Fechas incoherentes, con el tipo de error.</td>
+</tr>
+<tr class="even">
+<td><code>Incidencias_OSLR_Patron_Empirico.xlsx</code></td>
+<td>2</td>
+<td>Reservas que se salen del patrón histórico.</td>
+</tr>
+<tr class="odd">
+<td><code>Validacion_OSLR_{AñoMes}.xlsx</code></td>
+<td>2</td>
+<td>Comparación OSLR contra BDX a nivel póliza (4 hojas).</td>
+</tr>
+<tr class="even">
+<td><code>{AñoMes}_Siniestros_Marine.xlsx</code> / <code>.pkl</code></td>
+<td>2</td>
+<td><strong>Base final calculada.</strong></td>
+</tr>
+<tr class="odd">
+<td><code>{AñoMes}_Validaciones_Contables_Marine.xlsx</code></td>
+<td>3</td>
+<td>Validación de OSLR y de pagos contra Contabilidad.</td>
+</tr>
+<tr class="even">
+<td><code>{AñoMes}_Siniestros_Marine_PROCESADO.xlsx</code></td>
+<td>4</td>
+<td><strong>Base publicable</strong>, limpia y deduplicada.</td>
+</tr>
+<tr class="odd">
+<td>Tablas <code>transporte</code> / <code>transportehist</code></td>
+<td>5</td>
+<td>Base en SQL Server para reportes y dashboards.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="qué-hacer-cuando-algo-falla">11. Qué hacer cuando algo falla</h1>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Síntoma</th>
+<th>Causa probable</th>
+<th>Qué revisar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>No encuentra un archivo BDX</td>
+<td>La cedente cambió el nombre del archivo</td>
+<td>Sección 3 del programa 1, ajustar la ruta correspondiente.</td>
+</tr>
+<tr class="even">
+<td>Se detiene por fila de totales</td>
+<td>Una hoja del BDX trae totales que no fueron cortados por “FIN”</td>
+<td>Agregar “FIN” en el BDX debajo del último siniestro real.</td>
+</tr>
+<tr class="odd">
+<td>Aparecen coberturas huérfanas</td>
+<td>El BDX trae una cobertura nueva o mal escrita</td>
+<td>Agregar la variante a <code>COVER_MAP</code> en <code>config_marine.py</code>.</td>
+</tr>
+<tr class="even">
+<td>Se detiene por el guardia legacy</td>
+<td>Algún cambio de código tocó una póliza legacy</td>
+<td>Revisar las modificaciones recientes en las secciones 7 y 8 del programa 2.</td>
+</tr>
+<tr class="odd">
+<td>Menos de 3,500 registros cargados</td>
+<td>Se apuntó al archivo equivocado del mes anterior</td>
+<td>Verificar <code>AñoMes_ant</code> y la ruta del procesado anterior.</td>
+</tr>
+<tr class="even">
+<td>Se detiene por STATUS faltante</td>
+<td>El BDX no trae estado y no se encontró en históricos</td>
+<td>Completar el estado en el BDX y volver a correr el programa 4.</td>
+</tr>
+<tr class="odd">
+<td>Diferencias grandes en la validación contable</td>
+<td>Pólizas con nombre distinto entre fuentes</td>
+<td>Revisar el bloque de normalización de pólizas (sección 4 del programa 3).</td>
+</tr>
+<tr class="even">
+<td>Error al insertar en SQL</td>
+<td>Columna con caracteres especiales o texto más largo que la columna</td>
+<td>Revisar el log de truncados del programa 5.</td>
+</tr>
+</tbody>
+</table>
+
+  </main>
+</div>
+<script>
+(function(){
+  var main = document.getElementById('main');
+  var toc  = document.getElementById('toc');
+  var q    = document.getElementById('q');
+  var hits = document.getElementById('hits');
+
+  // ---- build TOC ----
+  var heads = main.querySelectorAll('h1, h2, h3');
+  var links = [];
+  Array.prototype.forEach.call(heads, function(h, i){
+    if(!h.id){ h.id = 'sec-' + i; }
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    a.className = h.tagName === 'H1' ? 'lvl1' : (h.tagName === 'H2' ? 'lvl2' : 'lvl3');
+    var li = document.createElement('li');
+    li.appendChild(a);
+    toc.appendChild(li);
+    links.push({a:a, h:h});
+  });
+
+  // ---- scroll spy ----
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY + 90, cur = null;
+    links.forEach(function(o){ if(o.h.offsetTop <= y){ cur = o.a; } });
+    links.forEach(function(o){ o.a.classList.remove('active'); });
+    if(cur){ cur.classList.add('active'); }
+  }, {passive:true});
+
+  // ---- search ----
+  var blocks = Array.prototype.slice.call(main.children);
+  function clearMarks(){
+    Array.prototype.forEach.call(main.querySelectorAll('mark'), function(m){
+      var p = m.parentNode;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    });
+  }
+  function highlight(node, re){
+    var n = 0;
+    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+    var texts = [];
+    while(walker.nextNode()){ texts.push(walker.currentNode); }
+    texts.forEach(function(t){
+      if(t.parentNode.nodeName === 'MARK') return;
+      var s = t.nodeValue;
+      if(!re.test(s)) return;
+      re.lastIndex = 0;
+      var frag = document.createDocumentFragment(), last = 0, m;
+      while((m = re.exec(s)) !== null){
+        frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+        var mk = document.createElement('mark');
+        mk.textContent = m[0];
+        frag.appendChild(mk);
+        last = m.index + m[0].length;
+        n++;
+        if(m[0].length === 0){ re.lastIndex++; }
+      }
+      frag.appendChild(document.createTextNode(s.slice(last)));
+      t.parentNode.replaceChild(frag, t);
+    });
+    return n;
+  }
+  function esc(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  var timer = null;
+  q.addEventListener('input', function(){
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+      var term = q.value.trim();
+      clearMarks();
+      if(term.length < 2){
+        blocks.forEach(function(b){ b.classList.remove('hidden'); });
+        links.forEach(function(o){ o.a.classList.remove('hidden'); });
+        hits.textContent = '';
+        return;
+      }
+      var re = new RegExp(esc(term), 'gi');
+      var total = 0;
+      // sections: from each H1/H2 to the next
+      var visibleHeads = {};
+      var currentH = null;
+      blocks.forEach(function(b){
+        if(/^H[123]$/.test(b.tagName)){ currentH = b; }
+        var hasText = re.test(b.textContent);
+        re.lastIndex = 0;
+        if(hasText){
+          total += highlight(b, re);
+          b.classList.remove('hidden');
+          if(currentH){ visibleHeads[currentH.id] = true; }
+        }else{
+          b.classList.add('hidden');
+        }
+      });
+      // keep headings of matching sections visible
+      blocks.forEach(function(b){
+        if(/^H[123]$/.test(b.tagName) && visibleHeads[b.id]){ b.classList.remove('hidden'); }
+      });
+      links.forEach(function(o){
+        if(visibleHeads[o.h.id]){ o.a.classList.remove('hidden'); }
+        else { o.a.classList.add('hidden'); }
+      });
+      hits.textContent = total ? (total + ' coincidencia' + (total===1?'':'s')) : 'Sin resultados';
+    }, 160);
+  });
+  q.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ q.value=''; q.dispatchEvent(new Event('input')); }
+  });
+})();
+</script>
+</body>
+</html>
