@@ -12,7 +12,19 @@
       "Bash(python -c ' *)",
       "Bash(powershell -Command \"Get-ChildItem 'C:\\\\Users\\\\IKAL14\\\\OneDrive - Kot Insurance Company AG\\\\Transporte, Carga y Embarcaciones\\\\' -Filter '*Siniestros_Marine_MANUAL*' -Force | Select-Object Name, Length, Attributes, LastWriteTime\")",
       "Bash(powershell -Command \"Get-Process EXCEL -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, MainWindowTitle\")",
-      "Bash(powershell -Command 'Get-Process | Where-Object {$_.ProcessName -match '\\\\''python|EXCEL'\\\\''} | Select-Object Id, ProcessName')"
+      "Bash(powershell -Command 'Get-Process | Where-Object {$_.ProcessName -match '\\\\''python|EXCEL'\\\\''} | Select-Object Id, ProcessName')",
+      "Bash(cd \"C:/Users/IKAL14/OneDrive - Kot Insurance Company AG/Códigos\" && ls -la)",
+      "Bash(cd \"C:/Users/IKAL14/OneDrive - Kot Insurance Company AG/Códigos/Códigos Vida/Vida/automatizacion\" && cat config.yml)",
+      "Bash(python run_actualizacion_vida.py --config config.yml)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Bash(cat \"C:/Users/IKAL14/Documents/Vida/automatizacion/estado_procesados.json\" 2>/dev/null || echo \"NO FILE\")",
+      "Bash(find \"C:/Users/IKAL14/Documents/Vida\" -iname \"estado_procesados.json\" 2>/dev/null)",
+      "Bash(python -c \"import papermill; print\\(papermill.__version__\\)\")",
+      "Read(//c/Users/IKAL14/OneDrive - Kot Insurance Company AG/Códigos/Códigos Vida/Vida/automatizacion/**)",
+      "Bash(python -c \"import win32com.client; print\\('pywin32 OK'\\)\")",
+      "Bash(cd \"C:/Users/IKAL14/OneDrive - Kot Insurance Company AG/Códigos/Códigos Vida/Vida/automatizacion\" && ls -la)",
+      "Bash(reg query *)",
+      "Read(//c/Users/IKAL14/Documents/Vida/**)"
     ]
   }
 }

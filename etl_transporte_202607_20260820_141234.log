@@ -1,0 +1,46 @@
+2026-08-20 14:12:34,866 | INFO | Período validado: 202607  (año=2026, mes=7)
+2026-08-20 14:12:34,868 | INFO | Registros en archivo fuente: 4,363
+2026-08-20 14:12:34,870 | INFO | Actualizando tabla 'transporte' (mes actual)...
+2026-08-20 14:12:35,883 | INFO | [Local] transporte actualizada (TRUNCATE+append)  (4,363 registros)
+2026-08-20 14:12:35,885 | INFO | ✅ Tabla 'transporte' actualizada con 4,363 registros
+2026-08-20 14:12:35,939 | INFO | ======================================================================
+2026-08-20 14:12:35,941 | INFO | PASO 1: Obtener estructura de tabla SQL
+2026-08-20 14:12:35,945 | INFO | ======================================================================
+2026-08-20 14:12:36,011 | INFO | ✓ Columna [activo] verificada en local
+2026-08-20 14:12:36,016 | INFO | Columnas renombradas para coincidir con SQL: {'StandRe LoB': 'STANDRE LOB', 'StandRe detailed LoB': 'STANDRE DETAILED LOB', 'LoB-Inward': 'LOB-INWARD', 'Cumulative SALVAGE': 'CUMULATIVE SALVAGE', 'Cumulative EXPENSES PAID': 'CUMULATIVE EXPENSES PAID', 'Cumulative VALUATION EXPENSES': 'CUMULATIVE VALUATION EXPENSES', 'Cumulative CLAIMS PAID': 'CUMULATIVE CLAIMS PAID', 'Total Claims Paid Inward': 'TOTAL CLAIMS PAID INWARD', 'Total Claims Paid no Alae': 'TOTAL CLAIMS PAID NO ALAE', 'OSLR Inward': 'OSLR INWARD', 'Inward Incurred': 'INWARD INCURRED', 'Inward Incurred no Alae': 'INWARD INCURRED NO ALAE', 'UW Year': 'UW YEAR', 'Nat Cat': 'NAT CAT'}
+2026-08-20 14:12:36,018 | INFO | ✓ Columnas válidas (intersección Excel∩SQL): 40
+2026-08-20 14:12:36,020 | WARNING | Columnas solo en SQL (quedarán NULL en el insert): ['FLAG CONTA']
+2026-08-20 14:12:36,022 | INFO | ======================================================================
+2026-08-20 14:12:36,023 | INFO | PASO 2: Preparar datos del Excel
+2026-08-20 14:12:36,024 | INFO | ======================================================================
+2026-08-20 14:12:36,032 | INFO | ✓ 4,363 registros preparados con activo = 1
+2026-08-20 14:12:36,034 | INFO | ======================================================================
+2026-08-20 14:12:36,036 | INFO | PASO 3: Cargar datos a tabla temporal
+2026-08-20 14:12:36,037 | INFO | ======================================================================
+2026-08-20 14:12:36,945 | INFO | [Local] Tabla temporal creada con replace (4,363 registros)
+2026-08-20 14:12:37,036 | WARNING | Mismatches de tipo detectados:
+             COLUMN_NAME tipo_hist tipo_temp
+           ACCIDENT YEAR       int    bigint
+                  activo       int    bigint
+            DATE OF LOSS      date  datetime
+          DATE OF REPORT      date  datetime
+               MES CARGA      date  datetime
+         NOTA_VALIDACION   varchar     float
+  POLICY PERIOD END DATE      date  datetime
+POLICY PERIOD START DATE      date  datetime
+                 UW YEAR       int    bigint
+     YEAR OF THE RESERVE       int    bigint
+2026-08-20 14:12:37,041 | INFO | ======================================================================
+2026-08-20 14:12:37,043 | INFO | PASO 4: Carga atómica en transportehist
+2026-08-20 14:12:37,044 | INFO | ======================================================================
+2026-08-20 14:12:37,131 | INFO | [Local] Desactivados: 4,345 registros → activo=0
+2026-08-20 14:12:37,205 | INFO | [Local] Insertados: 4,363 registros → activo=1
+2026-08-20 14:12:37,253 | INFO | [Local] ✅ Transacción OK — antes=21,451  deleted=0  inserted=4,363  esperado_despues=25,814
+2026-08-20 14:12:37,259 | INFO | ======================================================================
+2026-08-20 14:12:37,261 | INFO | RESUMEN FINAL
+2026-08-20 14:12:37,263 | INFO | ======================================================================
+2026-08-20 14:12:37,282 | INFO | transportehist Local — distribución por activo:
+2026-08-20 14:12:37,284 | INFO |    activo=1  →  4,363 registros  (MES ACTIVO (202607))
+2026-08-20 14:12:37,287 | INFO |    activo=0  →  21,451 registros  (Histórico)
+2026-08-20 14:12:37,298 | INFO | 🧹 Tabla temporal eliminada en Local
+2026-08-20 14:12:37,300 | INFO | ======================================================================
