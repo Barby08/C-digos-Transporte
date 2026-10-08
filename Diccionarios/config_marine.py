@@ -120,7 +120,8 @@ LIST_LEGACY = [
     'CJ200025', 'BJ200008', 'CJ2000250100', 'CJ2000250200',
     '147736177', '38417374', '13637426', '90600 323484', '90600 328256', 'M9000324',
     'M9000325',
-    '90600 320575'  # poliza 2004 sin BDX; la manual la conserva congelada (agregada oct-2026)
+    '90600 320575',  # poliza 2004 sin BDX; la manual la conserva congelada (agregada oct-2026)
+    '25300 30014476'  # poliza 2014 con un solo siniestro (35100 3070073, deducible 5M) que ningun BDX reporta; congelada como legacy (agregada oct-2026)
 ]
 
 # =============================================================================
@@ -322,7 +323,7 @@ def consolidar_columna(df, base):
 # contra la base del mes anterior; si esa base ya venia alterada el error se
 # propaga sin que nadie lo vea. Esta guardia compara contra una foto FIJA:
 # REF_LEGACY_202509.xlsx = filas legacy de
-# 'DB MANUAL/202509_Siniestros_Marine_MANUAL.xlsx' (951 filas con LIST_LEGACY actual; 938 hasta incluir '90600 320575').
+# 'DB MANUAL/202509_Siniestros_Marine_MANUAL.xlsx' (952 filas con LIST_LEGACY actual; 951 hasta incluir '25300 30014476'; 938 hasta incluir '90600 320575').
 # Si se agrega una poliza a LIST_LEGACY o se corrige la referencia a proposito,
 # regenerar este archivo.
 REF_LEGACY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'REF_LEGACY_202509.xlsx')
