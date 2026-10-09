@@ -38,6 +38,7 @@ COVER_MAP = {
     'AGUAS PROFUNDAS'            : 'DEEP WATER',
     # JACK-UPS
     'JACK-UPS'                   : 'JACK-UPS(DAÑO FISICO)',
+    'JACK-UPS(DAÑO FISICO)'      : 'JACK-UPS(DAÑO FISICO)',  # identidad: sin esto el historico perdia la cobertura al normalizar (nb1, seccion 8)
     'JACK UPS'                   : 'JACK-UPS(DAÑO FISICO)',
     'PLATAFORMAS MOVILES'        : 'JACK-UPS(DAÑO FISICO)',
     # RC FLETADORES
@@ -45,9 +46,12 @@ COVER_MAP = {
     'FLETADORES PMI'             : 'RC FLETADORES(PMI)',
     'FLETADORESPMI'              : 'RC FLETADORES(PMI)',
     'FLETADORES RC PMI'          : 'RC FLETADORES(PMI)',
+    'RC FLETADORES(PEMEX)'       : 'RC FLETADORES(PEMEX)',  # identidad (ver JACK-UPS)
+    'RC FLETADORES(PMI)'         : 'RC FLETADORES(PMI)',    # identidad
     # EQUIPO FERROVIARIO
     'EQUIPO FERROVIARIO'         : 'EQUIPO FERROVIARIO(DAÑO FÍSICO)',
     'FERREO'                     : 'EQUIPO FERROVIARIO(DAÑO FÍSICO)',
+    'EQUIPO FERROVIARIO(DAÑO FÍSICO)' : 'EQUIPO FERROVIARIO(DAÑO FÍSICO)',  # identidad
 }
 
 # =============================================================================
@@ -146,6 +150,7 @@ DICT_POLICY_START = {
     '3612100000008': '20/02/2021',
     'E01-2-60-000000010_0000-0-1': '20/04/2023',
     'NCGL-070-1002258': '20/02/2025',
+    '25300 30014476': '20/02/2014',  # Jack Ups INBURSA 2014-2016 (catalogo de polizas)
 }
 
 DICT_POLICY_END = {
@@ -167,6 +172,19 @@ DICT_POLICY_END = {
     '3612100000008': '20/04/2023',
     'E01-2-60-000000010_0000-0-1': '20/02/2025',
     'NCGL-070-1002258': '20/02/2027',
+    '25300 30014476': '20/02/2016',  # Jack Ups INBURSA 2014-2016 (catalogo de polizas)
+}
+
+# =============================================================================
+# 7b. CORRECCIONES DE VIGENCIA SOBRE EL HISTORICO
+# =============================================================================
+# Las filas legacy se congelan tal como vienen de la base del mes anterior, asi que una
+# vigencia mal cargada se arrastraria para siempre. El notebook 1 aplica estas correcciones
+# al cargar esa base (seccion 8). Formato: poliza -> {columna: fecha ISO}.
+CORRECCIONES_VIGENCIA_POLIZA = {
+    # Catalogo de polizas: '05-Jack-Ups', 20/02/2014 a 20/02/2016, 'Jack Ups INBURSA 2014-2016'.
+    # La base heredada traia el fin en 20/02/2015.
+    '25300 30014476': {'POLICY PERIOD START DATE': '2014-02-20', 'POLICY PERIOD END DATE': '2016-02-20'},
 }
 
 # =============================================================================
